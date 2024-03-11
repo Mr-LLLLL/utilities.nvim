@@ -1,6 +1,8 @@
 # utilities.nvim
 > The repository is collect some little utility in Neovim
 
+![Screencasts](https://github.com/Mr-LLLLL/media/blob/master/utilities/smart_move.webm)
+
 ## Installation
 
 With [lazy.nvim](https://github.com/folk/lazy.nvim):
