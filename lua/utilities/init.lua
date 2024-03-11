@@ -143,16 +143,16 @@ m.setup                  = function(opts)
     opts = opts or {}
     m.config = vim.tbl_deep_extend('force', get_default_config(), opts)
 
-    if m.quit_with_q then
+    if m.config.quit_with_q then
         m.init_quit()
     end
-    if m.jump_quickfix_item then
+    if m.config.jump_quickfix_item then
         m.init_qf_cr()
     end
-    if m.map_with_useful then
+    if m.config.map_with_useful then
         m.init_keymap()
     end
-    if m.ctrl_t_with_center then
+    if m.config.ctrl_t_with_center then
         m.init_ctr_t()
     end
 end
