@@ -1,7 +1,7 @@
 # utilities.nvim
 > The repository is collect some little utility in Neovim
 
-![Screencasts](https://github.com/Mr-LLLLL/media/blob/master/utilities/smart_move.webm)
+![Screencasts](https://github.com/Mr-LLLLL/media/blob/master/utilities/smart_move.gif)
 
 ## Installation
 
