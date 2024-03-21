@@ -15,6 +15,7 @@ m.init_quit               = function()
                 "guihua",
                 "notify",
                 "tsplayground",
+                "query",
             },
             callback = function(_)
                 vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
