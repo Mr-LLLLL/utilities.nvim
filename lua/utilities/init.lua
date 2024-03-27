@@ -1,7 +1,31 @@
 local m                   = {}
 
+m.autocmd_group           = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
+
+m.init_match_paren        = function()
+    vim.api.nvim_create_autocmd(
+        { "InsertEnter" },
+        {
+            pattern = "*",
+            callback = function()
+                vim.cmd("NoMatchParen")
+            end,
+            group = m.autocmd_group,
+        }
+    )
+    vim.api.nvim_create_autocmd(
+        { "InsertLeave" },
+        {
+            pattern = "*",
+            callback = function()
+                vim.cmd("DoMatchParen")
+            end,
+            group = m.autocmd_group,
+        }
+    )
+end
+
 m.init_quit               = function()
-    local group = vim.api.nvim_create_augroup("UtilitiesQuit", { clear = true })
     vim.api.nvim_create_autocmd(
         { "Filetype" },
         {
@@ -20,7 +44,7 @@ m.init_quit               = function()
             callback = function(_)
                 vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
             end,
-            group = group,
+            group = m.autocmd_group,
         }
     )
 
@@ -31,13 +55,12 @@ m.init_quit               = function()
             callback = function()
                 vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
             end,
-            group = group,
+            group = m.autocmd_group,
         }
     )
 end
 
 m.init_qf_cr              = function()
-    local group = vim.api.nvim_create_augroup("UtilitiesQfCR", { clear = true })
     vim.api.nvim_create_autocmd(
         { "Filetype" },
         {
@@ -53,7 +76,7 @@ m.init_qf_cr              = function()
                     { noremap = true, silent = true, buffer = true }
                 )
             end,
-            group = group,
+            group = m.autocmd_group,
         }
     )
 end
@@ -356,7 +379,6 @@ m.init_smart_move_textobj = function()
         }
     }
 
-    local group = vim.api.nvim_create_augroup("utilitiesSmartMove", { clear = true })
     vim.api.nvim_create_autocmd(
         { "Filetype" },
         {
@@ -386,7 +408,7 @@ m.init_smart_move_textobj = function()
                     )
                 end
             end,
-            group = group,
+            group = m.autocmd_group,
         }
     )
 end
@@ -405,6 +427,9 @@ m.config                  = {
     -- ```
     -- but this is need telescope when result is greater one
     ctrl_t_with_center = true,
+
+    -- NoMatchParen in insert mode, DoMatchParen when leave insert mode
+    match_paren_in_insert_mode = false,
 
     -- NOTE: require [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
     -- smart move behavior only support languages {Lua, Golang, Rust, Http}
@@ -451,6 +476,9 @@ m.setup                   = function(opts)
     end
     if not m.config.smart_move_textobj.disabled then
         m.init_smart_move_textobj()
+    end
+    if m.config.match_paren_in_insert_mode then
+        m.init_match_paren()
     end
 end
 
