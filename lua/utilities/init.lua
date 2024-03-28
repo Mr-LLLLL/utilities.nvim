@@ -264,11 +264,12 @@ m.init_smart_move_textobj = function()
             end
 
             local pos = vim.api.nvim_win_get_cursor(0)
-            local lines = vim.api.nvim_buf_get_lines(0, pos[1] - 1, pos[1], false)
-            if lines[1]:sub(pos[2], pos[2] + 5) == "type " then
+            local text = vim.api.nvim_buf_get_text(0, pos[1] - 1, pos[2], pos[1] - 1, pos[2] + 5, {})
+            if text[1] == "type " then
                 vim.cmd("normal! W")
             else
-                vim.fn.search("\\h\\+ :\\?=", "b")
+                vim.fn.search("[:=]\\+\\s", "b")
+                vim.cmd("normal! B")
             end
 
             return true
