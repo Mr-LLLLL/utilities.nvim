@@ -26,6 +26,9 @@ m.init_match_paren        = function()
 end
 
 m.init_quit               = function()
+    vim.keymap.set("n", "qq", "q", { noremap = true, silent = true })
+    vim.keymap.set("n", "q", function() end, { noremap = true, silent = true })
+
     vim.api.nvim_create_autocmd(
         { "Filetype" },
         {

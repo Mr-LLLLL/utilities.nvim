@@ -13,6 +13,7 @@ With [lazy.nvim](https://github.com/folk/lazy.nvim):
         event = "VeryLazy",
         opts = {
             -- always use `q` to quit preview windows 
+            -- NOTE: remapping `q` to `qq`. in case `q` always press by mistake
             quit_with_q = true,
             -- in qf window, use <cr> jump to
             jump_quickfix_item = true,
