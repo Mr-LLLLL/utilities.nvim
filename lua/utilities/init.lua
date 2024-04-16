@@ -47,16 +47,17 @@ m.init_quit               = function()
                     return
                 end
 
-                vim.keymap.set("n", "qq", "q", { noremap = true, silent = true, buffer = true })
                 local q_is_set_key = false
                 for _, v in pairs(vim.api.nvim_buf_get_keymap(0, "n")) do
                     if v.lhs == "q" then
                         q_is_set_key = true
                     end
                 end
-                if not q_is_set_key then
-                    vim.keymap.set("n", "q", function() end, { noremap = true, silent = true, buffer = true })
+                if q_is_set_key then
+                    return
                 end
+                vim.keymap.set("n", "qq", "q", { noremap = true, silent = true, buffer = true })
+                vim.keymap.set("n", "q", function() end, { noremap = true, silent = true, buffer = true })
             end,
             group = m.autocmd_group,
         }
