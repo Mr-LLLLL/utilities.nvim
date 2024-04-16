@@ -46,6 +46,7 @@ m.init_quit               = function()
             },
             callback = function(_)
                 vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
+                vim.keymap.del('n', 'qq')
             end,
             group = m.autocmd_group,
         }
