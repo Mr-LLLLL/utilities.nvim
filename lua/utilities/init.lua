@@ -26,27 +26,47 @@ m.init_match_paren        = function()
 end
 
 m.init_quit               = function()
-    vim.keymap.set("n", "qq", "q", { noremap = true, silent = true })
-    vim.keymap.set("n", "q", function() end, { noremap = true, silent = true })
-
+    local ft = {
+        "qf",
+        "spectre_panel",
+        "git",
+        "fugitive",
+        "fugitiveblame",
+        "help",
+        "guihua",
+        "notify",
+        "tsplayground",
+        "query",
+    }
     vim.api.nvim_create_autocmd(
         { "Filetype" },
         {
-            pattern = {
-                "qf",
-                "spectre_panel",
-                "git",
-                "fugitive",
-                "fugitiveblame",
-                "help",
-                "guihua",
-                "notify",
-                "tsplayground",
-                "query",
-            },
+            pattern = "*",
+            callback = function(_)
+                if vim.tbl_contains(ft, vim.bo.ft) then
+                    return
+                end
+
+                vim.keymap.set("n", "qq", "q", { noremap = true, silent = true, buffer = true })
+                local q_is_set_key = false
+                for _, v in pairs(vim.api.nvim_buf_get_keymap(0, "n")) do
+                    if v.lhs == "q" then
+                        q_is_set_key = true
+                    end
+                end
+                if not q_is_set_key then
+                    vim.keymap.set("n", "q", function() end, { noremap = true, silent = true, buffer = true })
+                end
+            end,
+            group = m.autocmd_group,
+        }
+    )
+    vim.api.nvim_create_autocmd(
+        { "Filetype" },
+        {
+            pattern = ft,
             callback = function(_)
                 vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
-                vim.keymap.del('n', 'qq')
             end,
             group = m.autocmd_group,
         }
