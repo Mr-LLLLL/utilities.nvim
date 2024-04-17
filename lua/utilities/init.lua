@@ -37,6 +37,7 @@ m.init_quit               = function()
         "notify",
         "tsplayground",
         "query",
+        "harpoon",
     }
     vim.api.nvim_create_autocmd(
         { "Filetype" },
@@ -47,14 +48,10 @@ m.init_quit               = function()
                     return
                 end
 
-                local q_is_set_key = false
                 for _, v in pairs(vim.api.nvim_buf_get_keymap(0, "n")) do
                     if v.lhs == "q" then
-                        q_is_set_key = true
+                        return
                     end
-                end
-                if q_is_set_key then
-                    return
                 end
                 vim.keymap.set("n", "qq", "q", { noremap = true, silent = true, buffer = true })
                 vim.keymap.set("n", "q", function() end, { noremap = true, silent = true, buffer = true })
