@@ -38,6 +38,7 @@ m.init_quit               = function()
         "tsplayground",
         "query",
         "harpoon",
+        "DressingInput"
     }
     local exclude_ft = {
         "markdown"
