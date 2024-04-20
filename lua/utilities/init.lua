@@ -39,22 +39,28 @@ m.init_quit               = function()
         "query",
         "harpoon",
     }
+    local exclude_ft = {
+        "markdown"
+    }
     vim.api.nvim_create_autocmd(
         { "Filetype" },
         {
             pattern = "*",
-            callback = function(_)
+            callback = function(opts)
                 if vim.tbl_contains(ft, vim.bo.ft) then
                     return
                 end
+                if vim.tbl_contains(exclude_ft, vim.bo.ft) then
+                    return
+                end
 
-                for _, v in pairs(vim.api.nvim_buf_get_keymap(0, "n")) do
+                for _, v in pairs(vim.api.nvim_buf_get_keymap(opts.buf, "n")) do
                     if v.lhs == "q" then
                         return
                     end
                 end
-                vim.keymap.set("n", "qq", "q", { noremap = true, silent = true, buffer = true })
-                vim.keymap.set("n", "q", function() end, { noremap = true, silent = true, buffer = true })
+                vim.keymap.set("n", "qq", "q", { noremap = true, silent = true, buffer = opts.buf })
+                vim.keymap.set("n", "q", function() end, { noremap = true, silent = true, buffer = opts.buf })
             end,
             group = m.autocmd_group,
         }
@@ -63,8 +69,8 @@ m.init_quit               = function()
         { "Filetype" },
         {
             pattern = ft,
-            callback = function(_)
-                vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
+            callback = function(opts)
+                vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = opts.buf })
             end,
             group = m.autocmd_group,
         }
@@ -74,8 +80,8 @@ m.init_quit               = function()
         { "CmdwinEnter" },
         {
             pattern = { "*" },
-            callback = function()
-                vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
+            callback = function(opts)
+                vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = opts.buf })
             end,
             group = m.autocmd_group,
         }
@@ -87,12 +93,12 @@ m.init_qf_cr              = function()
         { "Filetype" },
         {
             pattern = { "qf" },
-            callback = function()
+            callback = function(opts)
                 vim.keymap.set(
                     'n',
                     '<cr>',
                     function()
-                        local pos = vim.api.nvim_win_get_cursor(0)
+                        local pos = vim.api.nvim_win_get_cursor(opts.buf)
                         vim.cmd("cr " .. pos[1])
                     end,
                     { noremap = true, silent = true, buffer = true }
@@ -406,7 +412,7 @@ m.init_smart_move_textobj = function()
         { "Filetype" },
         {
             pattern = { "*" },
-            callback = function(_)
+            callback = function(opts)
                 local ft = vim.api.nvim_buf_get_option(0, 'filetype')
                 if m.config.smart_move_textobj.enabled_filetypes then
                     if not vim.tbl_contains(m.config.smart_move_textobj.enabled_filetypes, ft) then
@@ -425,7 +431,7 @@ m.init_smart_move_textobj = function()
                         {
                             noremap = true,
                             silent = true,
-                            buffer = true,
+                            buffer = opts.buf,
                             desc = v.desc,
                         }
                     )
