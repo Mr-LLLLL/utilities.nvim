@@ -3,12 +3,13 @@ local m                   = {}
 m.autocmd_group           = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
 
 m.init_match_paren        = function()
+    local match_paren_hl = vim.api.nvim_get_hl(0, { name = "MatchParen" })
     vim.api.nvim_create_autocmd(
         { "InsertEnter" },
         {
             pattern = "*",
             callback = function()
-                vim.cmd("NoMatchParen")
+                vim.api.nvim_set_hl(0, "MatchParen", {})
             end,
             group = m.autocmd_group,
         }
@@ -18,7 +19,7 @@ m.init_match_paren        = function()
         {
             pattern = "*",
             callback = function()
-                vim.cmd("DoMatchParen")
+                vim.api.nvim_set_hl(0, "MatchParen", match_paren_hl)
             end,
             group = m.autocmd_group,
         }
