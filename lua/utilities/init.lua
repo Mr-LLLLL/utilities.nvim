@@ -85,6 +85,12 @@ m.init_quit               = function()
             pattern = { "*" },
             callback = function(opts)
                 vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = opts.buf })
+                for _, v in pairs(vim.api.nvim_buf_get_keymap(opts.buf, "n")) do
+                    if v.lhs == "qq" then
+                        vim.keymap.del('n', "qq", { buffer = opts.buf })
+                        break
+                    end
+                end
             end,
             group = m.autocmd_group,
         }
