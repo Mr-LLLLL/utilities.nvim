@@ -286,7 +286,7 @@ m.init_smart_move_textobj = function()
                     return true
                 end
             else
-                vim.fn.search("function \\(\\h\\+\\.\\)\\?\\h", "e")
+                vim.fn.search("function \\(\\h\\+[\\.\\:]\\)\\?\\h", "e")
             end
 
             return true
