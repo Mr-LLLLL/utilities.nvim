@@ -5,7 +5,8 @@ m.autocmd_group                   = vim.api.nvim_create_augroup("Utilities-nvim"
 m.init_auto_change_cwd_to_project = function()
     vim.api.nvim_create_autocmd("BufEnter", {
         callback = function(ctx)
-            local root = vim.fs.root(ctx.buf, { ".git", ".svn", "Makefile", "mvnw", "package.json" })
+            local root = vim.fs.root(ctx.buf,
+                { ".git", ".svn", "Makefile", "mvnw", "package.json", "go.mod", "Cargo.toml" })
             if root and root ~= "." and root ~= vim.fn.getcwd() then
                 vim.uv.chdir(root)
             end
