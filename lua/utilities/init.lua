@@ -1,8 +1,20 @@
-local m                   = {}
+local m                           = {}
 
-m.autocmd_group           = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
+m.autocmd_group                   = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
 
-m.init_match_paren        = function()
+m.init_auto_change_cwd_to_project = function()
+    vim.api.nvim_create_autocmd("BufEnter", {
+        callback = function(ctx)
+            local root = vim.fs.root(ctx.buf, { ".git", ".svn", "Makefile", "mvnw", "package.json" })
+            if root and root ~= "." and root ~= vim.fn.getcwd() then
+                vim.uv.chdir(root)
+            end
+        end,
+        group = m.autocmd_group,
+    })
+end
+
+m.init_match_paren                = function()
     local match_paren_hl = vim.api.nvim_get_hl(0, { name = "MatchParen" })
     vim.api.nvim_create_autocmd(
         { "InsertEnter" },
@@ -26,7 +38,7 @@ m.init_match_paren        = function()
     )
 end
 
-m.init_quit               = function()
+m.init_quit                       = function()
     local ft = {
         "qf",
         "spectre_panel",
@@ -97,7 +109,7 @@ m.init_quit               = function()
     )
 end
 
-m.init_qf_cr              = function()
+m.init_qf_cr                      = function()
     vim.api.nvim_create_autocmd(
         { "Filetype" },
         {
@@ -118,7 +130,7 @@ m.init_qf_cr              = function()
     )
 end
 
-m.init_keymap             = function()
+m.init_keymap                     = function()
     vim.keymap.set({ 'n' }, ">", "zl", { noremap = true, silent = true, desc = "scroll right" })
     vim.keymap.set({ 'n' }, "<", "zh", { noremap = true, silent = true, desc = "scroll left" })
     vim.keymap.set({ 'n' }, "<m-k>", "O<esc>", { noremap = true, silent = true, desc = "insert line above current line" })
@@ -129,7 +141,7 @@ m.init_keymap             = function()
     vim.keymap.set({ 'n' }, "<cr>", "i<cr><esc>", { noremap = true, silent = true, desc = "split line" })
 end
 
-m.list_or_jump            = function(action, f, param)
+m.list_or_jump                    = function(action, f, param)
     local tele_action = require("telescope.actions")
     local lspParam = vim.lsp.util.make_position_params(vim.fn.win_getid())
     lspParam.context = { includeDeclaration = false }
@@ -169,7 +181,7 @@ m.list_or_jump            = function(action, f, param)
     end)
 end
 
-m.init_ctr_t              = function()
+m.init_ctr_t                      = function()
     vim.keymap.set('n', "<c-t>", function()
         if vim.fn.gettagstack().curidx == 1 then
             vim.notify("tags is empty", vim.log.levels.INFO)
@@ -180,7 +192,7 @@ m.init_ctr_t              = function()
     end, { noremap = true, silent = true, desc = "stack pop and centerize cursor" })
 end
 
-m.init_smart_move_textobj = function()
+m.init_smart_move_textobj         = function()
     local default_map = {
         [m.config.smart_move_textobj.mapping.prev_func_start] = {
             desc = "Goto Previous Function Start",
@@ -451,7 +463,7 @@ m.init_smart_move_textobj = function()
     )
 end
 
-m.config                  = {
+m.config                          = {
     -- always use `q` to quit preview windows
     quit_with_q = true,
     -- in qf window, use <cr> jump to
@@ -468,6 +480,9 @@ m.config                  = {
 
     -- NoMatchParen in insert mode, DoMatchParen when leave insert mode
     match_paren_in_insert_mode = false,
+
+    -- auto change cwd directory to project root directory
+    auto_change_cwd_to_project = false,
 
     -- NOTE: require [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
     -- smart move behavior only support languages {Lua, Golang, Rust, Http}
@@ -492,11 +507,11 @@ m.config                  = {
     }
 }
 
-local get_default_config  = function()
+local get_default_config          = function()
     return m.config
 end
 
-m.setup                   = function(opts)
+m.setup                           = function(opts)
     opts = opts or {}
     m.config = vim.tbl_deep_extend('force', get_default_config(), opts)
 
@@ -517,6 +532,9 @@ m.setup                   = function(opts)
     end
     if m.config.match_paren_in_insert_mode then
         m.init_match_paren()
+    end
+    if m.config.auto_change_cwd_to_project then
+        m.init_auto_change_cwd_to_project()
     end
 end
 
