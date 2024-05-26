@@ -3,7 +3,7 @@ local m                           = {}
 m.autocmd_group                   = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
 
 m.init_auto_change_cwd_to_project = function()
-    vim.api.nvim_create_autocmd("BufEnter", {
+    vim.api.nvim_create_autocmd("BufReadPost", {
         callback = function(ctx)
             local root = vim.fs.root(ctx.buf,
                 { ".git", ".svn", "Makefile", "mvnw", "package.json", "go.mod", "Cargo.toml" })
