@@ -7,11 +7,9 @@ m.init_auto_change_cwd_to_project = function()
         callback = function(ctx)
             local root = vim.fs.root(ctx.buf,
                 { "package.json", "go.mod", "Cargo.toml", ".git", ".svn", "Makefile", "mvnw" })
-            vim.defer_fn(function()
-                if root and root ~= "." and root ~= vim.fn.getcwd() then
-                    vim.uv.chdir(root)
-                end
-            end, 100)
+            if root and root ~= "." and root ~= vim.fn.getcwd() then
+                vim.uv.chdir(root)
+            end
         end,
         group = m.autocmd_group,
     })
