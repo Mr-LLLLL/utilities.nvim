@@ -1,14 +1,33 @@
 local m                           = {}
 
+local spetial_filetype            = {
+    "qf",
+    "spectre_panel",
+    "git",
+    "fugitive",
+    "fugitiveblame",
+    "help",
+    "guihua",
+    "notify",
+    "tsplayground",
+    "query",
+    "harpoon",
+    "DressingInput",
+    "sagaoutline",
+}
+
 m.autocmd_group                   = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
 
 m.init_auto_change_cwd_to_project = function()
     vim.api.nvim_create_autocmd("BufEnter", {
         callback = function(ctx)
+            if vim.tbl_contains(spetial_filetype, vim.bo.ft) then
+                return
+            end
             local root = vim.fs.root(ctx.buf,
                 { "package.json", "go.mod", "Cargo.toml", ".git", ".svn", "Makefile", "mvnw" })
             if root and root ~= "." and root ~= vim.fn.getcwd() then
-                vim.uv.chdir(root)
+                vim.fn.chdir(root)
             end
         end,
         group = m.autocmd_group,
@@ -40,21 +59,6 @@ m.init_match_paren                = function()
 end
 
 m.init_quit                       = function()
-    local ft = {
-        "qf",
-        "spectre_panel",
-        "git",
-        "fugitive",
-        "fugitiveblame",
-        "help",
-        "guihua",
-        "notify",
-        "tsplayground",
-        "query",
-        "harpoon",
-        "DressingInput",
-        "sagaoutline",
-    }
     local exclude_ft = {
         "markdown"
     }
@@ -63,7 +67,7 @@ m.init_quit                       = function()
         {
             pattern = "*",
             callback = function(opts)
-                if vim.tbl_contains(ft, vim.bo.ft) then
+                if vim.tbl_contains(spetial_filetype, vim.bo.ft) then
                     return
                 end
                 if vim.tbl_contains(exclude_ft, vim.bo.ft) then
