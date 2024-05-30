@@ -15,7 +15,7 @@ m.init_auto_change_cwd_to_project = function()
     })
 end
 
-m.init_match_paren                = function()
+m.init_no_match_paren             = function()
     local match_paren_hl = vim.api.nvim_get_hl(0, { name = "MatchParen" })
     vim.api.nvim_create_autocmd(
         { "InsertEnter" },
@@ -480,7 +480,7 @@ m.config                          = {
     ctrl_t_with_center = true,
 
     -- NoMatchParen in insert mode, DoMatchParen when leave insert mode
-    match_paren_in_insert_mode = false,
+    no_match_paren_in_insert_mode = false,
 
     -- auto change cwd directory to project root directory
     auto_change_cwd_to_project = false,
@@ -531,8 +531,8 @@ m.setup                           = function(opts)
     if not m.config.smart_move_textobj.disabled then
         m.init_smart_move_textobj()
     end
-    if m.config.match_paren_in_insert_mode then
-        m.init_match_paren()
+    if m.config.no_match_paren_in_insert_mode then
+        m.init_no_match_paren()
     end
     if m.config.auto_change_cwd_to_project then
         m.init_auto_change_cwd_to_project()
