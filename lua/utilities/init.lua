@@ -88,7 +88,7 @@ m.init_quit                       = function()
     vim.api.nvim_create_autocmd(
         { "Filetype" },
         {
-            pattern = ft,
+            pattern = spetial_filetype,
             callback = function(opts)
                 vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = opts.buf })
             end,
