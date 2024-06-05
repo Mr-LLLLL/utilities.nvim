@@ -124,7 +124,7 @@ m.init_qf_cr                      = function()
                     'n',
                     '<cr>',
                     function()
-                        local pos = vim.api.nvim_win_get_cursor(opts.buf)
+                        local pos = vim.api.nvim_win_get_cursor(0)
                         vim.cmd("cr " .. pos[1])
                     end,
                     { noremap = true, silent = true, buffer = true }
