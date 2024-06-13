@@ -6,6 +6,7 @@ local spetial_filetype            = {
     "git",
     "fugitive",
     "fugitiveblame",
+    "translator",
     "help",
     "guihua",
     "notify",
