@@ -6,6 +6,7 @@ local spetial_filetype            = {
     "spectre_panel",
     "git",
     "fugitive",
+    "httpResult",
     "fugitiveblame",
     "translator",
     "help",
