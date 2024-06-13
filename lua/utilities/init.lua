@@ -1,6 +1,7 @@
 local m                           = {}
 
 local spetial_filetype            = {
+    "git",
     "qf",
     "spectre_panel",
     "git",
@@ -496,7 +497,7 @@ m.config                          = {
     smart_move_textobj = {
         disabled = false,
         -- disabled filetype, default support all language just like treesitter-textobj behavior
-        disabled_filetypes = { "git" },
+        disabled_filetypes = spetial_filetype,
         -- if you want to support some filetypes, uncomment it and fill your language
         -- enabled_filetypes = {},
         mapping = {
