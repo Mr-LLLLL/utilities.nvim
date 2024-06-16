@@ -9,6 +9,7 @@ local spetial_filetype            = {
     "httpResult",
     "fugitiveblame",
     "translator",
+    "checkhealth",
     "help",
     "guihua",
     "notify",
