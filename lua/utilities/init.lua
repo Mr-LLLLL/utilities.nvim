@@ -22,6 +22,22 @@ local spetial_filetype            = {
 
 m.autocmd_group                   = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
 
+m.init_auto_change_conceallevel   = function()
+    vim.api.nvim_create_autocmd("InsertEnter", {
+        callback = function()
+            m.conceallevel = vim.o.conceallevel
+            vim.o.conceallevel = 0
+        end,
+        group = m.autocmd_group,
+    })
+    vim.api.nvim_create_autocmd("InsertLeave", {
+        callback = function()
+            vim.o.conceallevel = m.conceallevel or vim.o.conceallevel
+        end,
+        group = m.autocmd_group,
+    })
+end
+
 m.init_auto_change_cwd_to_project = function()
     vim.api.nvim_create_autocmd("BufEnter", {
         callback = function(ctx)
@@ -493,6 +509,9 @@ m.config                          = {
     -- auto change cwd directory to project root directory
     auto_change_cwd_to_project = false,
 
+    -- auto change conceallevel, when insert InsertEnter or InsertLeave event
+    auto_change_conceallevel = false,
+
     -- NOTE: require [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
     -- smart move behavior only support languages {Lua, Golang, Rust, Http}
     -- others language will moved like treesitter-textobj
@@ -544,6 +563,9 @@ m.setup                           = function(opts)
     end
     if m.config.auto_change_cwd_to_project then
         m.init_auto_change_cwd_to_project()
+    end
+    if m.config.auto_change_conceallevel then
+        m.init_auto_change_conceallevel()
     end
 end
 
