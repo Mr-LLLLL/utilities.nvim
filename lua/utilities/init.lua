@@ -22,6 +22,26 @@ local spetial_filetype            = {
 
 m.autocmd_group                   = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
 
+m.init_auto_disable_inlayhint     = function()
+    vim.api.nvim_create_autocmd("InsertEnter", {
+        callback = function()
+            m.inlayhint_enable = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
+            if m.inlayhint_enable then
+                vim.lsp.inlay_hint.enable(false, { bufnr = 0 })
+            end
+        end,
+        group = m.autocmd_group,
+    })
+    vim.api.nvim_create_autocmd("InsertLeave", {
+        callback = function()
+            if m.inlayhint_enable then
+                vim.lsp.inlay_hint.enable(m.inlayhint_enable, { bufnr = 0 })
+            end
+        end,
+        group = m.autocmd_group,
+    })
+end
+
 m.init_auto_change_conceallevel   = function()
     vim.api.nvim_create_autocmd("InsertEnter", {
         callback = function()
@@ -509,8 +529,11 @@ m.config                          = {
     -- auto change cwd directory to project root directory
     auto_change_cwd_to_project = false,
 
-    -- auto change conceallevel, when insert InsertEnter or InsertLeave event
+    -- auto change conceallevel, when InsertEnter or InsertLeave event
     auto_change_conceallevel = false,
+    --
+    -- auto disabled inlayhint when InsertEnter envet trigger
+    auto_disable_inlayhint = false,
 
     -- NOTE: require [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
     -- smart move behavior only support languages {Lua, Golang, Rust, Http}
@@ -566,6 +589,9 @@ m.setup                           = function(opts)
     end
     if m.config.auto_change_conceallevel then
         m.init_auto_change_conceallevel()
+    end
+    if m.config.auto_disable_inlayhint then
+        m.init_auto_disable_inlayhint()
     end
 end
 
