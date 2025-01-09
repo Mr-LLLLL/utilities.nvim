@@ -19,9 +19,6 @@ local spetial_filetype            = {
     "harpoon",
     "DressingInput",
     "sagaoutline",
-    "Avante",
-    "AvanteInput",
-    "codecompanion"
 }
 
 m.autocmd_group                   = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
