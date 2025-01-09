@@ -21,6 +21,7 @@ local spetial_filetype            = {
     "sagaoutline",
     "Avante",
     "AvanteInput",
+    "codecompanion"
 }
 
 m.autocmd_group                   = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
