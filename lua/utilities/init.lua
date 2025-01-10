@@ -2,6 +2,7 @@ local m                           = {}
 
 local spetial_filetype            = {
     "git",
+    "gitcommit",
     "qf",
     "spectre_panel",
     "git",
