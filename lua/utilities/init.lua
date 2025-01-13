@@ -1,5 +1,4 @@
 local m                           = {}
-
 local spetial_filetype            = {
     "git",
     "gitcommit",
@@ -20,6 +19,10 @@ local spetial_filetype            = {
     "harpoon",
     "DressingInput",
     "sagaoutline",
+    "Avante",
+    "AvanteInput",
+    "markdown",
+    "codecompanion",
 }
 
 m.autocmd_group                   = vim.api.nvim_create_augroup("Utilities-nvim", { clear = true })
@@ -101,21 +104,44 @@ m.init_no_match_paren             = function()
 end
 
 m.init_quit                       = function()
-    local exclude_ft = {
-        "markdown"
+    local exclude_ft          = {
+        "markdown",
+        "codecompanion",
     }
+    local havaNotQuitFiletyps = {
+        "git",
+        "gitcommit",
+        "qf",
+        "spectre_panel",
+        "git",
+        "fugitive",
+        "oil",
+        "httpResult",
+        "fugitiveblame",
+        "translator",
+        "checkhealth",
+        "help",
+        "guihua",
+        "notify",
+        "tsplayground",
+        "query",
+        "harpoon",
+        "DressingInput",
+        "sagaoutline",
+    }
+
     vim.api.nvim_create_autocmd(
         { "Filetype" },
         {
             pattern = "*",
             callback = function(opts)
-                if vim.tbl_contains(spetial_filetype, vim.bo.ft) then
+                if vim.tbl_contains(havaNotQuitFiletyps, vim.bo.ft) then
+                    vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = opts.buf })
                     return
                 end
                 if vim.tbl_contains(exclude_ft, vim.bo.ft) then
                     return
                 end
-
                 for _, v in pairs(vim.api.nvim_buf_get_keymap(opts.buf, "n")) do
                     if v.lhs == "q" then
                         return
@@ -123,16 +149,6 @@ m.init_quit                       = function()
                 end
                 vim.keymap.set("n", "qq", "q", { noremap = true, silent = true, buffer = opts.buf })
                 vim.keymap.set("n", "q", function() end, { noremap = true, silent = true, buffer = opts.buf })
-            end,
-            group = m.autocmd_group,
-        }
-    )
-    vim.api.nvim_create_autocmd(
-        { "Filetype" },
-        {
-            pattern = spetial_filetype,
-            callback = function(opts)
-                vim.keymap.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = opts.buf })
             end,
             group = m.autocmd_group,
         }
