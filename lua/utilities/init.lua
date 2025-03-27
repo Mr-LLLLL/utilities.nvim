@@ -206,7 +206,7 @@ end
 
 m.list_or_jump                    = function(action, f, param)
     local tele_action = require("telescope.actions")
-    local lspParam = vim.lsp.util.make_position_params(vim.fn.win_getid())
+    local lspParam = vim.lsp.util.make_position_params(vim.fn.win_getid(), 'utf-8')
     lspParam.context = { includeDeclaration = false }
     vim.lsp.buf_request(vim.api.nvim_get_current_buf(), action, lspParam, function(err, result, ctx, _)
         if err then
@@ -216,7 +216,7 @@ m.list_or_jump                    = function(action, f, param)
         local flattened_results = {}
         if result then
             -- textDocument/definition can return Location or Locatiom.config.smart_move_textobj.mapping.prev_func_end
-            if not vim.tbl_islist(result) then
+            if not vim.islist(result) then
                 flattened_results = { result }
             end
 
@@ -236,7 +236,7 @@ m.list_or_jump                    = function(action, f, param)
                     vim.cmd("tab split")
                 end
             end
-            vim.lsp.util.jump_to_location(flattened_results[1], offset_encoding)
+            vim.lsp.util.show_document(flattened_results[1], offset_encoding, { focus = true })
             tele_action.center()
         else
             f(param)
