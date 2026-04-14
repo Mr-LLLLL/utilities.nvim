@@ -301,7 +301,7 @@ m.init_smart_move_textobj         = function()
     local jumped_by_ts_move = function(backward, obj)
         local prev_pos = vim.api.nvim_win_get_cursor(0)
         local current_pos
-        local text_move = require("nvim-treesitter.textobjects.move")
+        local text_move = require("nvim-treesitter-textobjects.move")
         if backward then
             text_move.goto_previous_start(obj)
             current_pos = vim.api.nvim_win_get_cursor(0)
