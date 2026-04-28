@@ -259,42 +259,55 @@ m.init_smart_move_textobj         = function()
     local default_map = {
         [m.config.smart_move_textobj.mapping.prev_func_start] = {
             desc = "Goto Previous Function Start",
-            map = "<cmd>TSTextobjectGotoPreviousStart @function.outer<cr>",
-
+            map = function()
+                require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
+            end,
         },
         [m.config.smart_move_textobj.mapping.next_func_start] = {
             desc = "Goto Next Function Start",
-            map = "<cmd>TSTextobjectGotoNextStart @function.outer<cr>",
-
+            map = function()
+                require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
+            end,
         },
         [m.config.smart_move_textobj.mapping.prev_func_end] = {
             desc = "Goto Previous Function End",
-            map = "<cmd>TSTextobjectGotoPreviousEnd @function.outer<cr>",
+            map = function()
+                require("nvim-treesitter-textobjects.move").goto_previous_end("@function.outer", "textobjects")
+            end,
 
         },
         [m.config.smart_move_textobj.mapping.next_func_end] = {
             desc = "Goto Next Function End",
-            map = "<cmd>TSTextobjectGotoNextEnd @function.outer<cr>",
+            map = function()
+                require("nvim-treesitter-textobjects.move").goto_next_end("@function.outer", "textobjects")
+            end,
 
         },
         [m.config.smart_move_textobj.mapping.prev_class_start] = {
             desc = "Goto Previous Class Start",
-            map = "<cmd>TSTextobjectGotoPreviousStart @class.outer<cr>",
-
+            map = function()
+                require("nvim-treesitter-textobjects.move").goto_previous_start("@class.outer", "textobjects")
+            end,
         },
         [m.config.smart_move_textobj.mapping.next_class_start] = {
             desc = "Goto Next Class Start",
-            map = "<cmd>TSTextobjectGotoNextStart @class.outer<cr>",
+            map = function()
+                require("nvim-treesitter-textobjects.move").goto_next_start("@class.outer", "textobjects")
+            end,
 
         },
         [m.config.smart_move_textobj.mapping.prev_class_end] = {
             desc = "Goto Previous Class End",
-            map = "<cmd>TSTextobjectGotoPreviousEnd @class.outer<cr>",
+            map = function()
+                require("nvim-treesitter-textobjects.move").goto_previous_end("@class.outer", "textobjects")
+            end,
 
         },
         [m.config.smart_move_textobj.mapping.next_class_end] = {
             desc = "Goto Next Class End",
-            map = "<cmd>TSTextobjectGotoNextEnd @class.outer<cr>",
+            map = function()
+                require("nvim-treesitter-textobjects.move").goto_next_end("@class.outer", "textobjects")
+            end,
         },
     }
 
