@@ -357,6 +357,15 @@ m.init_smart_move_textobj         = function()
 
             return true
         end,
+        python = function(backward)
+            if not jumped_by_ts_move(backward, "@function.outer") then
+                return false
+            end
+
+            vim.fn.search("def \\h", "e")
+
+            return true
+        end,
         rust = function(backward)
             if not jumped_by_ts_move(backward, "@function.outer") then
                 return false
@@ -474,6 +483,18 @@ m.init_smart_move_textobj         = function()
             [m.config.smart_move_textobj.mapping.next_class_start] = {
                 map = function()
                     wrap_jump(class_jump, "rust", false)
+                end,
+            },
+        },
+        python = {
+            [m.config.smart_move_textobj.mapping.prev_func_start] = {
+                map = function()
+                    wrap_jump(func_jump, "python", true)
+                end
+            },
+            [m.config.smart_move_textobj.mapping.next_func_start] = {
+                map = function()
+                    wrap_jump(func_jump, "python", false)
                 end,
             },
         },
